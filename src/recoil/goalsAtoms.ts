@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-import { IGoal, IPostGoal } from '../interfaces/interfaces';
+import { IGoalDetail, IPostGoal, ISearchGoal } from '../interfaces/interfaces';
 
 const { persistAtom } = recoilPersist();
 
@@ -26,55 +26,48 @@ export const postGoal = atom<IPostGoal>({
     headCount: 1,
     isPrivate: false,
     isManual: false,
-    accntId: 0,
+    accountId: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });
 
-export const goalId = atom({
-  key: 'goalId',
-  default: {
-    id: 1,
-  },
-});
-
-export const goalDetail = atom({
+export const goalDetail = atom<IGoalDetail>({
   key: 'goalDetail',
   default: {
-    goalId: 0,
     userId: 0,
+    goalId: 0,
     nickname: '',
+    title: '',
+    emoji: '',
+    description: '',
+    hashTag: [],
     amount: 0,
-    curCount: 0,
-    headCount: 0,
     startDate: new Date(),
     endDate: new Date(),
-    title: '',
-    hashtag: [''],
-    emoji: '',
-
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    members: [{ nickname: '', achieveRate: 0 }],
+    curCount: 0,
+    headCount: 0,
+    members: [{ userId: 0, nickname: '', image: '', attainment: 0 }],
   },
 });
 
-export const groupGoals = atom<Array<IGoal>>({
+export const groupGoals = atom<Array<ISearchGoal>>({
   key: 'groupGoals',
   default: [
     {
-      id: 0,
-      emoji: '',
-      title: '',
-      description: '',
-      isPrivate: false,
-      hashtag: [''],
+      userId: 0,
+      goalId: 0,
+      nickname: '',
       amount: 0,
-      attainment: 0,
+      curCount: 0,
+      headCount: 0,
       startDate: new Date(),
       endDate: new Date(),
-      headCount: 0,
-      curCount: 0,
+      title: '',
+      hashTag: [],
+      emoji: '',
+      description: '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   ],
 });

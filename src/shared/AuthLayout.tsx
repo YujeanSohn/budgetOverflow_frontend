@@ -1,11 +1,27 @@
-import React, { FunctionComponent, PropsWithChildren, useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 
 import Header from './Header';
 import Navigation from './Navigation';
 
-const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
+import { userInfo } from '../recoil/userAtoms';
+
+const AuthLayout = () => {
+  const { isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAccessToken && isRefreshToken) {
+      navigate('/pinnumber');
+      return;
+    }
+    if (!isAccessToken && !isRefreshToken) {
+      navigate('/login');
+      return;
+    }
+  }, [isAccessToken, isRefreshToken]);
+
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -13,14 +29,17 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!headerRef.current || !navRef.current) return;
-    if (pathname.includes('/goals/post')) return setHeaderNavHeight(headerRef.current.clientHeight);
+    if (pathname.includes('/goals/') && !pathname.includes('lookup'))
+      return setHeaderNavHeight(headerRef.current.clientHeight);
     setHeaderNavHeight(headerRef.current.clientHeight + navRef.current.clientHeight);
   }, [headerRef.current?.clientHeight, navRef.current?.clientHeight, pathname]);
 
   return (
     <>
       <Header props='' ref={headerRef} />
-      <Body height={`${headerNavHeight}px`}>{children}</Body>
+      <Body height={`${headerNavHeight}px`}>
+        <Outlet />
+      </Body>
       <Navigation props='' ref={navRef} />
     </>
   );
@@ -34,4 +53,4 @@ const Body = styled.div<{ height: string }>`
   background-color: white;
 `;
 
-export default Layout;
+export default AuthLayout;

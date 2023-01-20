@@ -10,41 +10,42 @@ import { goalApi } from '../apis/client';
 
 import { groupGoals } from '../recoil/goalsAtoms';
 
-import { IGoals } from '../interfaces/interfaces';
+import { ISearchGoal } from '../interfaces/interfaces';
 
 const SearchGoals = () => {
   const location = useLocation();
-
   const setGoalsList = useSetRecoilState(groupGoals);
-
-  const { isLoading: isLoadingGoals, data: searchGoals } = useQuery<IGoals>(
-    'searchGoals',
-    () => goalApi.getGoalsByWord(location.search)
+  const { isLoading: isLoadingGoals, data: searchGoals } = useQuery<Array<ISearchGoal>>('searchGoals', () =>
+    goalApi.getGoalsByWord(location.search)
   );
 
   const searchGroupGoals = useRecoilValue(groupGoals);
-
   useEffect(() => {
     if (!searchGoals) return;
-    setGoalsList(searchGoals.goals);
+    setGoalsList(searchGoals);
   }, [searchGoals]);
 
-  const searchGoalCards = searchGroupGoals.map((goal) => (
-    <GroupGoalCards key={goal.id} goal={goal} />
-  ));
+  const searchGoalCards = searchGroupGoals.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />);
 
   return (
     <Wrapper>
       <GoalCardsWrapper>
-        {isLoadingGoals ? (
-          <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-        ) : (
-          searchGoalCards
-        )}
+        {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : searchGoalCards}
       </GoalCardsWrapper>
     </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: calc(100% - 10px);
+`;
 
 const GoalCardsWrapper = styled.div`
   display: flex;
@@ -54,17 +55,6 @@ const GoalCardsWrapper = styled.div`
   gap: 20px;
   width: 100%;
   height: 100%;
-`;
-
-const Wrapper = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 95%;
-  height: 80%;
 `;
 
 const LoadingMsg = styled.div`

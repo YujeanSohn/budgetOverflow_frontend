@@ -2,11 +2,11 @@ import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import AccountInfoCard from '../../account/AccountInfoCard';
+import AccountInfoCard from './AccountInfoCard';
 
-import { postGoal } from '../../../recoil/goalsAtoms';
+import { postGoal } from '../../recoil/goalsAtoms';
 
-import { IAccount } from '../../../interfaces/interfaces';
+import { IAccount } from '../../interfaces/interfaces';
 
 interface AccountSelectProps {
   accounts: Array<IAccount>;
@@ -15,8 +15,8 @@ interface AccountSelectProps {
 const AccountSelect = ({ accounts }: AccountSelectProps) => {
   const savedPostGoal = useRecoilValue(postGoal);
   const setPostGoal = useSetRecoilState(postGoal);
-  const handleSelect = (accntId: number) => {
-    setPostGoal({ ...savedPostGoal, accntId });
+  const handleSelect = (accountId: number) => {
+    setPostGoal({ ...savedPostGoal, accountId });
   };
 
   return (

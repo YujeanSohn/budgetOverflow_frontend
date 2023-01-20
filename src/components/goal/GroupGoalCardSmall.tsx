@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { IGoal } from '../../interfaces/interfaces';
 import EmojiBox from '../common/elem/EmojiBox';
 
-const NarrowGroupGoalCard = ({ goal }: { goal: IGoal }) => {
+import { ISearchGoal } from '../../interfaces/interfaces';
+
+const GroupGoalCardSmall = ({ goal }: { goal: ISearchGoal }) => {
   return (
     <CardWrapper>
-      <EmojiBox unicode={'26f0-fe0f'} boxSize={72} emojiSize={72} showBg={false} />
+      <EmojiBox unicode={goal.emoji} boxSize={72} emojiSize={72} showBg={false} />
       <TextWrapper>
         <Title>{goal.title}</Title>
         <TagList>
-          {goal.hashtag.map((tag) => (
+          {goal.hashTag.map((tag) => (
             <Tag key={tag}>{`#${tag}`}</Tag>
           ))}
         </TagList>
@@ -60,4 +61,4 @@ const Tag = styled.span`
   color: ${(props) => props.theme.primaryMain};
 `;
 
-export default NarrowGroupGoalCard;
+export default GroupGoalCardSmall;

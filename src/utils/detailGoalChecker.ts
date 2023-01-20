@@ -1,7 +1,7 @@
-import { IParticapantInfoProps } from '../interfaces/interfaces';
+import { IMemeberInfo } from '../interfaces/interfaces';
 
-export const participantIdFinder = (members: Array<IParticapantInfoProps>, userId: number) => {
-  const participantId = members.find((member) => member.userId === userId)?.userId;
+export const participantIdFinder = (recruitMember: Array<IMemeberInfo>, userId: number) => {
+  const participantId = recruitMember.find((member) => member.userId === userId)?.userId;
 
   return participantId;
 };
