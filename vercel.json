@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/bankapi/:path*",
+      "destination": "https://api.hyphen.im/:path*"
+    }
+  ]
+}
